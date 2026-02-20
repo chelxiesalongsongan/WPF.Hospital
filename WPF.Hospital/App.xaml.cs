@@ -21,6 +21,7 @@ namespace WPF.Hospital
         {
             base.OnStartup(e);
             _host = new HostBuilder()
+                .ConfigureAppConfiguration(cfg => cfg.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true))
                 .ConfigureServices((context, services) =>
                 {
                     services.AddDbContext<HospitaDbContext> (options =>
@@ -38,7 +39,10 @@ namespace WPF.Hospital
                 .Build();
             _host.Start();
 
-            var mainWindow = _host.Services.GetRequiredService<MainWindow>();
+
+            var mainWindow = 
+                _host.Services.GetRequiredService<MainWindow>();
+            mainWindow.Show();
        
         }
     }

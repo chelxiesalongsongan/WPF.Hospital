@@ -12,5 +12,7 @@ namespace WPF.Hospital.Service
         Patient Get(int id);
 
         IEnumerable<Patient> GetAll();
+        void Add (Patient patient);
+        void Delete(int id);
     }
 }

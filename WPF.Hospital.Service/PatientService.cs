@@ -77,7 +77,19 @@ namespace WPF.Hospital.Service
 
         List<Patient> IPatientService.GetAll()
         {
-            throw new NotImplementedException();
+            return _patientRepository.GetAll().Select(patient => new Patient
+            {
+                Id = patient.Id,
+                FirstName = patient.FirstName,
+                LastName = patient.LastName,
+                Age = patient.Age,
+                Birthdate = patient.Birthdate,
+                History = _historyRepository.GetByPatientId(patient.Id).Select(h => new History
+                {
+                    Id = h.Id,
+                    Procedure = h.Procedure
+                }).ToList()
+            }).ToList();
         }
 
         public (bool Ok, string Message) Create(Patient patient)

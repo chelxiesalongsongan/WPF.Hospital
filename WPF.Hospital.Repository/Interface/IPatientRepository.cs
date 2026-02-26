@@ -9,11 +9,5 @@ namespace WPF.Hospital.Repository
 {
     public interface IPatientRepository : IRepository<Model.Patients>
     {
-        List<Patients> GetAll();
-        Patients? Get(int id);
-        void Add(Patients entity);
-        void Update(Patients entity);
-        void Delete(int id);
-        int Save();
     }
 }

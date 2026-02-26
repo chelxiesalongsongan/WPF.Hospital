@@ -74,5 +74,25 @@ namespace WPF.Hospital.Service
             _patientRepository.Delete(id);
             _patientRepository.Save();
         }
+
+        List<Patient> IPatientService.GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public (bool Ok, string Message) Create(Patient patient)
+        {
+            throw new NotImplementedException();
+        }
+
+        public (bool Ok, string Message) Update(Patient patient)
+        {
+            throw new NotImplementedException();
+        }
+
+        (bool Ok, string Message) IPatientService.Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

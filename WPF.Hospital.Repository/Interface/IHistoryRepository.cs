@@ -9,6 +9,13 @@ namespace WPF.Hospital.Repository
 {
     public interface IHistoryRepository : IRepository<History>
     {
-        IEnumerable <History> GetByPatientId(int patientId);
+        List<History> GetAll();
+        List<History> GetByPatientId(int patientId);
+        History? Get(int id);
+        void Add(History entity);
+        void Update(History entity);
+        void Delete(int id);
+        int Save();
+        
     }
 }

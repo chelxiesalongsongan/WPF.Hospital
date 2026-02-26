@@ -39,5 +39,10 @@ namespace WPF.Hospital.Repository
         }
 
         public int Save() => _context.SaveChanges();
+
+        List<Patients> IPatientRepository.GetAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

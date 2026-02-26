@@ -9,10 +9,11 @@ namespace WPF.Hospital.Service
 {
     public interface IPatientService
     {
-        Patient Get(int id);
-
-        IEnumerable<Patient> GetAll();
-        void Add (Patient patient);
-        void Delete(int id);
+        List<Patient> GetAll();
+        Patient? Get(int id);
+        (bool Ok, string Message) Create(Patient patient);
+        (bool Ok, string Message) Update(Patient patient);
+        (bool Ok, string Message) Delete(int id);
+        void Add(Patient patient);
     }
 }

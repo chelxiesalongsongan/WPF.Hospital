@@ -54,5 +54,20 @@ namespace WPF.Hospital.Repository
         {
             return _context.History.Where(h => h.PatientId == patientId).ToList();
         }
+
+        List<History> IHistoryRepository.GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<History> GetByPatient(int patientId)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<History> IHistoryRepository.GetByPatientId(int patientId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

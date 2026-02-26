@@ -7,12 +7,12 @@ using WPF.Hospital.Model;
 
 namespace WPF.Hospital.Repository
 {
-    public interface IPatientRepository : IRepository<Model.Patients>
+    public interface IDoctorRepository
     {
-        List<Patients> GetAll();
-        Patients? Get(int id);
-        void Add(Patients entity);
-        void Update(Patients entity);
+        List<Doctor> GetAll();
+        Doctor? Get(int id);
+        void Add(Doctor entity);
+        void Update(Doctor entity);
         void Delete(int id);
         int Save();
     }

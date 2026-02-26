@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WPF.Hospital.DTO;
 using WPF.Hospital.Repository;
 
 namespace WPF.Hospital.Service
 {
-    public class HistoryService
+    public class HistoryService : IHistoryService
     {
         private readonly Repository.IHistoryRepository _historyRepository;
         private readonly IPatientRepository _patientRepository;
@@ -66,5 +67,34 @@ namespace WPF.Hospital.Service
             return _historyRepository.GetByPatientId(patientId);
         }
 
+        List<History> IHistoryService.GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<History> GetByPatient(int patientId)
+        {
+            throw new NotImplementedException();
+        }
+
+        History? IHistoryService.Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public (bool Ok, string Message) Create(History history)
+        {
+            throw new NotImplementedException();
+        }
+
+        public (bool Ok, string Message) Update(History history)
+        {
+            throw new NotImplementedException();
+        }
+
+        (bool Ok, string Message) IHistoryService.Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

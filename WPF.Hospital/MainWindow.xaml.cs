@@ -43,5 +43,11 @@ namespace WPF.Hospital
             DeletePatient deletePatient = new DeletePatient(_patientService);
             deletePatient.ShowDialog();
         }
+
+        private void btnUpdatePatient_Click(Object sender, RoutedEventArgs e)
+        {
+            UpdatePatients updatePatient = new UpdatePatients(_patientService);
+            updatePatient.ShowDialog();
+        }
     }
 }

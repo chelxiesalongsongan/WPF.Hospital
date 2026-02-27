@@ -18,8 +18,17 @@
         </Grid.ColumnDefinitions>
         <Label Content="All Patients" FontWeight="Bold"></Label>
         <Label Content="Search:" Grid.Row="1"></Label>
-        <TextBox Grid.Row="1" Grid.Column="1"></TextBox>
-        <DataGrid ItemsSource="{Binding Patients}" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,5,0,0"></DataGrid>
-        
+        <TextBox x:Name="txtSearch" Grid.Row="1" Grid.Column="1" TextChanged="txtSearch_TextChanged"></TextBox>
+        <DataGrid x:Name="dgPatients" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,5,0,47"/>
+        <Button x:Name="btnUpdatePatient" 
+                Grid.Column="1" 
+                Content="Update" 
+                HorizontalAlignment="Left" 
+                Margin="488,301,0,0" 
+                Grid.Row="2" 
+                VerticalAlignment="Top" 
+                Width="184" 
+                Height="32" 
+                Click="btnUpdatePatient_Click"/>
     </Grid>
 </Window>

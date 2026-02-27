@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WPF.Hospital.Model;
 
 namespace WPF.Hospital.Repository
@@ -16,9 +13,35 @@ namespace WPF.Hospital.Repository
             _context = context;
         }
 
+        public List<History> GetAll()
+        {
+            return _context.History.ToList();
+        }
+
+        public History? Get(int id)
+        {
+            return _context.History.Find(id);
+        }
+
+        
+        public List<History> GetByPatientId(int patientId)
+        {
+            return _context.History
+                           .Where(h => h.PatientId == patientId)
+                           .ToList();
+        }
+
+    
         public void Add(History entity)
         {
             _context.History.Add(entity);
+            _context.SaveChanges();     
+        }
+
+        public void Update(History entity)
+        {
+            _context.History.Update(entity);
+            _context.SaveChanges();
         }
 
         public void Delete(int id)
@@ -27,47 +50,17 @@ namespace WPF.Hospital.Repository
             if (history != null)
             {
                 _context.History.Remove(history);
+                _context.SaveChanges();
             }
         }
-
-        public History Get(int id)
-        {
-            return _context.History.Find(id);
-        }
-
-        public IEnumerable<History> GetAll()
-        {
-            return _context.History.ToList();
-        }
-
         public int Save()
         {
             return _context.SaveChanges();
         }
 
-        public void Update(History entity)
+        IEnumerable<History> IRepository<History>.GetAll()
         {
-            _context.History.Update(entity);
-        }
-
-        public IEnumerable<History> GetByPatientId(int patientId)
-        {
-            return _context.History.Where(h => h.PatientId == patientId).ToList();
-        }
-
-        List<History> IHistoryRepository.GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<History> GetByPatient(int patientId)
-        {
-            throw new NotImplementedException();
-        }
-
-        List<History> IHistoryRepository.GetByPatientId(int patientId)
-        {
-            throw new NotImplementedException();
+            return GetAll();
         }
     }
 }

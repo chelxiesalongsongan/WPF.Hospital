@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using WPF.Hospital.Model;
 using WPF.Hospital.Repository;
 
@@ -10,98 +6,78 @@ namespace WPF.Hospital.Service
 {
     public class DoctorService : IDoctorService
     {
-        private readonly IHistoryService _historyService;
-        private readonly IDoctorRepository _doctorRepository;
+        private readonly IDoctorRepository _repository;
 
-        public DoctorService(IDoctorRepository doctorRepository, IHistoryService historyService)
+        public DoctorService(IDoctorRepository repository)
         {
-            _doctorRepository = doctorRepository;
-            _historyService = historyService;
+            _repository = repository;
         }
 
-        public void Add(Model.Doctor doctor)
+
+        public List<Doctor> GetAll()
         {
-            _doctorRepository.Add(doctor);
-            _doctorRepository.Save();
+            return _repository.GetAll();
         }
 
-        public void Delete(int id)
+
+        public Doctor? Get(int id)
         {
-            _doctorRepository.Delete(id);
-            _doctorRepository.Save();
+            return _repository.Get(id);
         }
 
-        public Model.Doctor? Get(int id)
+        public (bool Ok, string Message) Create(Doctor doctor)
         {
-            return _doctorRepository.Get(id);
-        }
+            if (doctor == null)
+                return (false, "Doctor is null.");
 
-        public IEnumerable<Model.Doctor> GetAll()
-        {
-            return _doctorRepository.GetAll();
-        }
-
-        public void Update(Model.Doctor doctor)
-        {
-            _doctorRepository.Update(doctor);
-            _doctorRepository.Save();
-        }
-
-        (bool Ok, string Message) IDoctorService.Create(Model.Doctor doctor)
-        {
             try
             {
-                Add(doctor);
+                _repository.Add(doctor);
                 return (true, "Doctor created successfully.");
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 return (false, $"Error creating doctor: {ex.Message}");
             }
         }
 
-        (bool Ok, string Message) IDoctorService.Delete(int id)
+
+        public (bool Ok, string Message) Update(Doctor doctor)
         {
+            if (doctor == null)
+                return (false, "Doctor is null.");
+
             try
             {
-                Delete(id);
-                return (true, "Doctor deleted successfully.");
-            }
-            catch (Exception ex)
-            {
-                return (false, $"Error deleting doctor: {ex.Message}");
-            }
-        }
-        (bool Ok, string Message) IDoctorService.Update(Model.Doctor doctor)
-        {
-            try
-            {
-                Update(doctor);
+                var existing = _repository.Get(doctor.Id);
+                if (existing == null)
+                    return (false, "Doctor not found.");
+
+                _repository.Update(doctor);
                 return (true, "Doctor updated successfully.");
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 return (false, $"Error updating doctor: {ex.Message}");
             }
         }
-        public (bool Ok, string Message) Create(Model.Doctor doctor)
+
+
+        public (bool Ok, string Message) Delete(int id)
         {
             try
             {
-                Add(doctor);
-                return (true, "Doctor created successfully.");
+                var doctor = _repository.Get(id);
+                if (doctor == null)
+                    return (false, "Doctor not found.");
+
+                _repository.Delete(id);
+                return (true, "Doctor deleted successfully.");
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
-                return (false, $"Error creating doctor: {ex.Message}");
+                return (false, $"Error deleting doctor: {ex.Message}");
             }
-
-
-        }
-
-        List<Doctor> IDoctorService.GetAll()
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using WPF.Hospital.Model;
 
@@ -14,21 +13,30 @@ namespace WPF.Hospital.Repository
             _context = context;
         }
 
-        public Patients Get(int id)
+
+        public List<Patients> GetAll()
+        {
+            return _context.Patients.ToList();
+        }
+
+
+        public Patients? Get(int id)
         {
             return _context.Patients.Find(id);
         }
 
-        public IEnumerable<Patients> GetAll() => _context.Patients.ToList();
 
         public void Add(Patients entity)
         {
             _context.Patients.Add(entity);
+            _context.SaveChanges(); 
         }
+
 
         public void Update(Patients entity)
         {
             _context.Patients.Update(entity);
+            _context.SaveChanges();
         }
 
         public void Delete(int id)
@@ -37,14 +45,14 @@ namespace WPF.Hospital.Repository
             if (patient != null)
             {
                 _context.Patients.Remove(patient);
+                _context.SaveChanges();
             }
         }
+
 
         public int Save()
         {
             return _context.SaveChanges();
         }
-
-        
     }
 }

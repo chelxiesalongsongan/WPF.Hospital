@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using WPF.Hospital.Model;
 using WPF.Hospital.Repository;
 
@@ -10,89 +6,83 @@ namespace WPF.Hospital.Service
 {
     public class PrescriptionService : IPrescriptionService
     {
-        private readonly IPrescriptionRepository _prescriptionRepository;
-        private readonly IHistoryRepository _historyRepository;
+        private readonly IPrescriptionRepository _repository;
 
-        public PrescriptionService(IPrescriptionRepository prescriptionRepository, IHistoryRepository historyRepository)
+        public PrescriptionService(IPrescriptionRepository repository)
         {
-            _prescriptionRepository = prescriptionRepository;
-            _historyRepository = historyRepository;
+            _repository = repository;
         }
 
-        public void Add(Model.Prescription prescription)
+  
+        public List<Prescription> GetAll()
         {
-                _prescriptionRepository.Add(prescription);
-                _prescriptionRepository.Save();
-        }
-
-        public void Delete(int id)
-        {
-            _prescriptionRepository.Delete(id);
-            _prescriptionRepository.Save();
-        }
-
-        public Model.Prescription? Get(int id)
-        {
-            return _prescriptionRepository.Get(id);
-        }
-
-        public IEnumerable<Model.Prescription> GetAll()
-        {
-            return _prescriptionRepository.GetAll();
+            return _repository.GetAll();
         }
 
         public List<Prescription> GetByHistory(int historyId)
         {
-            throw new NotImplementedException();
+            return _repository.GetByHistory(historyId);
         }
 
-        public void Update(Model.Prescription prescription)
+
+        public Prescription? Get(int id)
         {
-            _prescriptionRepository.Update(prescription);
-            _prescriptionRepository.Save();
+            return _repository.Get(id);
         }
 
-        (bool Ok, string Message) IPrescriptionService.Create(Model.Prescription prescription)
+
+        public (bool Ok, string Message) Create(Prescription prescription)
         {
+            if (prescription == null)
+                return (false, "Prescription cannot be null.");
+
             try
             {
-                Add(prescription);
+                _repository.Add(prescription);
                 return (true, "Prescription created successfully.");
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 return (false, $"Error creating prescription: {ex.Message}");
             }
         }
 
-        (bool Ok, string Message) IPrescriptionService.Delete(int id)
+
+        public (bool Ok, string Message) Update(Prescription prescription)
         {
+            if (prescription == null)
+                return (false, "Prescription cannot be null.");
+
             try
             {
-                Delete(id);
-                return (true, "Prescription deleted successfully.");
-            }
-            catch (Exception ex)
-            {
-                return (false, $"Error deleting prescription: {ex.Message}");
-            }
-        }
+                var existing = _repository.Get(prescription.Id);
+                if (existing == null)
+                    return (false, "Prescription not found.");
 
-        List<Prescription> IPrescriptionService.GetAll()
-        {
-            return _prescriptionRepository.GetAll();
-        }
-
-        (bool Ok, string Message) IPrescriptionService.Update(Prescription prescription)
-        {
-            try
-            {
-                Update(prescription);
+                _repository.Update(prescription);
                 return (true, "Prescription updated successfully.");
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 return (false, $"Error updating prescription: {ex.Message}");
+            }
+        }
+
+
+        public (bool Ok, string Message) Delete(int id)
+        {
+            try
+            {
+                var prescription = _repository.Get(id);
+                if (prescription == null)
+                    return (false, "Prescription not found.");
+
+                _repository.Delete(id);
+                return (true, "Prescription deleted successfully.");
+            }
+            catch (System.Exception ex)
+            {
+                return (false, $"Error deleting prescription: {ex.Message}");
             }
         }
     }

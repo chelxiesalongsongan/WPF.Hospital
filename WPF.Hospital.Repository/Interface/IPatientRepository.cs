@@ -7,7 +7,13 @@ using WPF.Hospital.Model;
 
 namespace WPF.Hospital.Repository
 {
-    public interface IPatientRepository : IRepository<Model.Patients>
+    public interface IPatientRepository
     {
+        List<Patients> GetAll();
+        Patients? Get(int id);
+        void Add(Patients entity);
+        void Update(Patients entity);
+        void Delete(int id);
+        int Save();
     }
 }

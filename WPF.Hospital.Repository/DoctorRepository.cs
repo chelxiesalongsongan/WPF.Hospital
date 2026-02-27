@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WPF.Hospital.Model;
 
 namespace WPF.Hospital.Repository
@@ -16,14 +13,26 @@ namespace WPF.Hospital.Repository
             _context = context;
         }
 
+        public List<Doctor> GetAll()
+        {
+            return _context.Doctors.ToList();
+        }
+
+        public Doctor? Get(int id)
+        {
+            return _context.Doctors.Find(id);
+        }
+
         public void Add(Doctor entity)
         {
             _context.Doctors.Add(entity);
+            _context.SaveChanges(); 
         }
 
-        public void Update(Doctor entity) 
+        public void Update(Doctor entity)
         {
             _context.Doctors.Update(entity);
+            _context.SaveChanges(); 
         }
 
         public void Delete(int id)
@@ -32,17 +41,8 @@ namespace WPF.Hospital.Repository
             if (doctor != null)
             {
                 _context.Doctors.Remove(doctor);
+                _context.SaveChanges();
             }
-        }
-
-        public Doctor? Get(int id)
-        {
-            return _context.Doctors.Find(id);
-        }
-
-        public List<Doctor> GetAll()
-        {
-            return _context.Doctors.ToList();
         }
 
         public int Save()

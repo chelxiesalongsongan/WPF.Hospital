@@ -18,6 +18,7 @@ namespace WPF.Hospital
     public partial class MainWindow : Window
     {
         private readonly IPatientService _patientService;
+
         public MainWindow(IPatientService patientService)
         {
             InitializeComponent();

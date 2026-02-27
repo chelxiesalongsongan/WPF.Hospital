@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using WPF.Hospital.Model;
 using WPF.Hospital.Repository;
 
@@ -10,87 +6,78 @@ namespace WPF.Hospital.Service
 {
     public class MedicineService : IMedicineService
     {
-        private readonly IMedicineRepository _medicineRepository;
-        private readonly IHistoryRepository _historyRepository;
+        private readonly IMedicineRepository _repository;
 
-        public MedicineService(IMedicineRepository medicineRepository, IHistoryRepository historyRepository)
+        public MedicineService(IMedicineRepository repository)
         {
-            _medicineRepository = medicineRepository;
-            _historyRepository = historyRepository;
+            _repository = repository;
         }
 
-        public void Add(Model.Medicine medicine)
+
+        public List<Medicine> GetAll()
         {
-            _medicineRepository.Add(medicine);
-            _medicineRepository.Save();
+            return _repository.GetAll();
         }
 
-        public void Delete(int id)
+
+        public Medicine? Get(int id)
         {
-            _medicineRepository.Delete(id);
-            _medicineRepository.Save();
+            return _repository.Get(id);
         }
 
-        public Model.Medicine? Get(int id)
-        {
-            return _medicineRepository.Get(id);
-        }
 
-        public IEnumerable<Model.Medicine> GetAll()
+        public (bool Ok, string Message) Create(Medicine medicine)
         {
-            return _medicineRepository.GetAll();
-        }
+            if (medicine == null)
+                return (false, "Medicine is null.");
 
-        public void Update(Model.Medicine medicine)
-        {
-            _medicineRepository.Update(medicine);
-            _medicineRepository.Save();
-        }
-
-        (bool Ok, string Message) IMedicineService.Create(Model.Medicine medicine)
-        {
             try
             {
-                Add(medicine);
+                _repository.Add(medicine);
                 return (true, "Medicine created successfully.");
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 return (false, $"Error creating medicine: {ex.Message}");
             }
         }
 
-        (bool Ok, string Message) IMedicineService.Delete(int id)
+
+        public (bool Ok, string Message) Update(Medicine medicine)
         {
+            if (medicine == null)
+                return (false, "Medicine is null.");
+
             try
             {
-                Delete(id);
-                return (true, "Medicine deleted successfully.");
-            }
-            catch (Exception ex)
-            {
-                return (false, $"Error deleting medicine: {ex.Message}");
-            }
+                var existing = _repository.Get(medicine.Id);
+                if (existing == null)
+                    return (false, "Medicine not found.");
 
-        }
-
-        List<Medicine> IMedicineService.GetAll()
-        {
-            return GetAll().ToList();
-        }
-
-        (bool Ok, string Message) IMedicineService.Update(Medicine medicine)
-        {
-            try
-            {
-                Update(medicine);
+                _repository.Update(medicine);
                 return (true, "Medicine updated successfully.");
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 return (false, $"Error updating medicine: {ex.Message}");
             }
         }
+
+        public (bool Ok, string Message) Delete(int id)
+        {
+            try
+            {
+                var medicine = _repository.Get(id);
+                if (medicine == null)
+                    return (false, "Medicine not found.");
+
+                _repository.Delete(id);
+                return (true, "Medicine deleted successfully.");
+            }
+            catch (System.Exception ex)
+            {
+                return (false, $"Error deleting medicine: {ex.Message}");
+            }
+        }
     }
 }
-

@@ -1,110 +1,131 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WPF.Hospital.DTO;
+using WPF.Hospital.Model;
 using WPF.Hospital.Repository;
 
 namespace WPF.Hospital.Service
 {
     public class PatientService : IPatientService
     {
-        private readonly IPatientRepository _patientRepository;
-        private readonly IHistoryRepository _historyRepository;
+        private readonly IPatientRepository _repository;
 
-        public PatientService(IPatientRepository patientRepository, IHistoryRepository historyRepository)
+        public PatientService(IPatientRepository repository)
         {
-            _patientRepository = patientRepository;
-            _historyRepository = historyRepository;
+            _repository = repository;
         }
 
-        public Patient Get(int id)
+
+        public List<Patient> GetAll()
         {
-            Model.Patients patient = _patientRepository.Get(id);
+
+            return _repository.GetAll()
+                              .Select(p => new Patient
+                              {
+                                  Id = p.Id,
+                                  FirstName = p.FirstName,
+                                  LastName = p.LastName,
+                                  Age = p.Age
+                              })
+                              .ToList();
+        }
+
+
+        public Patient? Get(int id)
+        {
+            var entity = _repository.Get(id);
+            if (entity == null) return null;
 
             return new Patient
             {
-                Id = patient.Id,
-                FirstName = patient.FirstName,
-                LastName = patient.LastName,
-                Age = patient.Age,
-                Birthdate = patient.Birthdate,
-                History = _historyRepository.GetByPatientId(id).Select(h => new History
-                {
-                    Id = h.Id,
-                    Procedure = h.Procedure
-                }).ToList()
+                Id = entity.Id,
+                FirstName = entity.FirstName,
+                LastName = entity.LastName,
+                Age = entity.Age
             };
         }
 
-        public IEnumerable<Patient> GetAll()
-        {             var patients = _patientRepository.GetAll();
-            return patients.Select(patient => new Patient
+
+        public (bool Ok, string Message) Create(Patient patientDto)
+        {
+            if (patientDto == null)
+                return (false, "Patient cannot be null.");
+
+            try
             {
-                Id = patient.Id,
-                FirstName = patient.FirstName,
-                LastName = patient.LastName,
-                Age = patient.Age,
-                Birthdate = patient.Birthdate,
-                History = _historyRepository.GetByPatientId(patient.Id).Select(h => new History
+                var entity = new Patients
                 {
-                    Id = h.Id,
-                    Procedure = h.Procedure
-                }).ToList()
-            }).ToList();
-        }
+                    FirstName = patientDto.FirstName,
+                    LastName = patientDto.LastName,
+                    Age = patientDto.Age
+                };
 
-        public void Add (Patient patient)
-        {
-            _patientRepository.Add(new Model.Patients
+                _repository.Add(entity);
+                return (true, "Patient created successfully.");
+            }
+            catch (Exception ex)
             {
-                FirstName = patient.FirstName,
-                LastName = patient.LastName,
-                Age = patient.Age,
-                Birthdate = patient.Birthdate,
-
-            });
-
-            _patientRepository.Save();
+                return (false, $"Error creating patient: {ex.Message}");
+            }
         }
 
-        public void Delete (int id)
-        {
-            _patientRepository.Delete(id);
-            _patientRepository.Save();
-        }
 
-        List<Patient> IPatientService.GetAll()
+        public (bool Ok, string Message) Update(Patient patientDto)
         {
-            return _patientRepository.GetAll().Select(patient => new Patient
+            if (patientDto == null)
+                return (false, "Patient cannot be null.");
+
+            try
             {
-                Id = patient.Id,
-                FirstName = patient.FirstName,
-                LastName = patient.LastName,
-                Age = patient.Age,
-                Birthdate = patient.Birthdate,
-                History = _historyRepository.GetByPatientId(patient.Id).Select(h => new History
-                {
-                    Id = h.Id,
-                    Procedure = h.Procedure
-                }).ToList()
-            }).ToList();
+                var entity = _repository.Get(patientDto.Id);
+                if (entity == null)
+                    return (false, "Patient not found.");
+
+
+                entity.FirstName = patientDto.FirstName;
+                entity.LastName = patientDto.LastName;
+                entity.Age = patientDto.Age;
+
+                _repository.Update(entity);
+                return (true, "Patient updated successfully.");
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error updating patient: {ex.Message}");
+            }
         }
 
-        public (bool Ok, string Message) Create(Patient patient)
+        public (bool Ok, string Message) Delete(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var entity = _repository.Get(id);
+                if (entity == null)
+                    return (false, "Patient not found.");
+
+                _repository.Delete(id);
+                return (true, "Patient deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error deleting patient: {ex.Message}");
+            }
         }
 
-        public (bool Ok, string Message) Update(Patient patient)
-        {
-            throw new NotImplementedException();
-        }
 
-        (bool Ok, string Message) IPatientService.Delete(int id)
+        public void Add(Patient patientDto)
         {
-            throw new NotImplementedException();
+            if (patientDto == null) return;
+
+            var entity = new Patients
+            {
+                FirstName = patientDto.FirstName,
+                LastName = patientDto.LastName,
+                Age = patientDto.Age
+            };
+
+            _repository.Add(entity);
         }
     }
 }

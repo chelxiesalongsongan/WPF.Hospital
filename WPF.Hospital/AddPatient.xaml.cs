@@ -9,20 +9,21 @@ namespace WPF.Hospital
     public partial class AddPatient : Window
     {
         private readonly IPatientService _patientService;
-        private Patient _editingPatient;  // This will hold the patient being updated
+        private Patient _editingPatient;
+
+        // Event para mag-notify sa AllPatients window
+        public event Action PatientSaved;
 
         public AddPatient(IPatientService patientService)
         {
             InitializeComponent();
             _patientService = patientService;
+            DataContext = new PatientViewModel();
         }
 
-        // This method will be called to load data into the window if we're updating
         public void LoadPatient(Patient patient)
         {
             _editingPatient = patient;
-
-            // Pre-fill the fields for the update
             DataContext = new PatientViewModel
             {
                 Id = patient.Id,
@@ -31,60 +32,61 @@ namespace WPF.Hospital
                 Age = patient.Age.ToString(),
                 Birthdate = patient.Birthdate
             };
-
-            // Update the window title and button content for update mode
-            this.Title = "Update Patient";
-            btnAddPatient.Content = "Save Changes";  // Change button text to Save Changes
+            Title = "Update Patient";
+            btnAddPatient.Content = "Save Changes";
         }
 
-        // Handle the button click for both Add and Update
         private void btnAddPatient_Click(object sender, RoutedEventArgs e)
         {
-            // Convert ViewModel to DTO
-            var vm = (PatientViewModel)DataContext;
+            var vm = DataContext as PatientViewModel;
+            if (vm == null) return;
 
-            // If we are editing a patient (Update)
+            // Optional fields, default kung null
+            string firstName = vm.FirstName ?? "";
+            string lastName = vm.LastName ?? "";
+            int.TryParse(vm.Age, out int age);
+            DateTime? birthdate = vm.Birthdate;
+
             if (_editingPatient != null)
             {
-                _editingPatient.FirstName = vm.FirstName;
-                _editingPatient.LastName = vm.LastName;
-                _editingPatient.Age = int.Parse(vm.Age);
-                _editingPatient.Birthdate = vm.Birthdate;
+                // UPDATE
+                _editingPatient.FirstName = firstName;
+                _editingPatient.LastName = lastName;
+                _editingPatient.Age = age;
+                _editingPatient.Birthdate = birthdate ?? DateTime.MinValue;
 
-                // Update the patient via the service
                 var result = _patientService.Update(_editingPatient);
-                if (result.Ok)
+                if (!result.Ok)
                 {
-                    MessageBox.Show("Patient updated successfully!");
-                    this.Close();
+                    MessageBox.Show(result.Message);
+                    return;
                 }
-                else
-                {
-                    MessageBox.Show($"Error updating patient: {result.Message}");
-                }
+
+                MessageBox.Show("Patient updated successfully!");
             }
             else
             {
-                // Handle Add patient logic
+                // ADD
                 var newPatient = new Patient
                 {
-                    FirstName = vm.FirstName,
-                    LastName = vm.LastName,
-                    Age = int.Parse(vm.Age),
-                    Birthdate = vm.Birthdate
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Age = age,
+                    Birthdate = birthdate ?? DateTime.MinValue
                 };
 
-                var result = _patientService.Create(newPatient);  // Assuming Create method exists
-                if (result.Ok)
+                var result = _patientService.Create(newPatient);
+                if (!result.Ok)
                 {
-                    MessageBox.Show("Patient added successfully!");
-                    this.Close();
+                    MessageBox.Show(result.Message);
+                    return;
                 }
-                else
-                {
-                    MessageBox.Show($"Error adding patient: {result.Message}");
-                }
+
+                MessageBox.Show("Patient added successfully!");
             }
+
+            PatientSaved?.Invoke(); // Notify parent window
+            Close();
         }
     }
 }

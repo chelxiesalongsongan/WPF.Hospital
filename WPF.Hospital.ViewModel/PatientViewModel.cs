@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WPF.Hospital.ViewModel
 {
@@ -12,6 +8,9 @@ namespace WPF.Hospital.ViewModel
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Age { get; set; }
-        public DateTime Birthdate { get; set; }
+        public DateTime? Birthdate { get; set; }
+
+        // String property for DataGrid display
+        public string BirthdateString => Birthdate.HasValue ? Birthdate.Value.ToShortDateString() : "";
     }
 }

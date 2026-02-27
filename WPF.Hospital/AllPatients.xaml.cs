@@ -14,22 +14,19 @@ namespace WPF.Hospital
         {
             InitializeComponent();
             _patientService = patientService;
-            LoadPatients(); 
+            LoadPatients();
         }
 
-      
         private void LoadPatients(string searchTerm = "")
         {
             var patients = _patientService.GetAll();
 
-    
-            if (!string.IsNullOrEmpty(searchTerm))
+            if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                patients = patients.Where(p =>
-                    p.FirstName.Contains(searchTerm, System.StringComparison.OrdinalIgnoreCase))
+                patients = patients
+                    .Where(p => p.FirstName.Contains(searchTerm, System.StringComparison.OrdinalIgnoreCase))
                     .ToList();
             }
-
 
             var patientViewModels = patients.Select(p => new PatientViewModel
             {
@@ -40,47 +37,38 @@ namespace WPF.Hospital
                 Birthdate = p.Birthdate
             }).ToList();
 
- 
             dgPatients.ItemsSource = patientViewModels;
         }
 
-        // TextChanged event handler for Search functionality
         private void txtSearch_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            string searchTerm = txtSearch.Text.Trim();  // Get the search term
-            LoadPatients(searchTerm);  // Re-load patients with filtered list based on search term
+            LoadPatients(txtSearch.Text.Trim());
         }
 
-        // Update button click event
         private void btnUpdatePatient_Click(object sender, RoutedEventArgs e)
         {
             if (dgPatients.SelectedItem is PatientViewModel selected)
             {
-                // Convert selected ViewModel to DTO (Patient DTO)
                 var patientDto = new Patient
                 {
                     Id = selected.Id,
                     FirstName = selected.FirstName,
                     LastName = selected.LastName,
-                    Age = int.Parse(selected.Age),
+                    Age = int.TryParse(selected.Age, out int age) ? age : 0,
                     Birthdate = selected.Birthdate
                 };
 
-                // Open AddPatient window for editing the selected patient
                 var updateWindow = new AddPatient(_patientService);
-
-                // Pre-fill patient data in the AddPatient window for updating
-                updateWindow.LoadPatient(patientDto); // This method will set the button to Save Changes
-
-                // Show the update window
+                updateWindow.LoadPatient(patientDto);
+                updateWindow.PatientSaved += () => LoadPatients(txtSearch.Text); // auto-refresh
                 updateWindow.ShowDialog();
-
-                // Refresh the DataGrid after update
-                LoadPatients(txtSearch.Text);  // Retain the search filter after update
             }
             else
             {
-                MessageBox.Show("Please select a patient to update.", "No Selection", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please select a patient to update.",
+                    "No Selection",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
             }
         }
     }

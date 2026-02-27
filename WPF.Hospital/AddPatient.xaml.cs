@@ -11,7 +11,7 @@ namespace WPF.Hospital
         private readonly IPatientService _patientService;
         private Patient _editingPatient;
 
-        // Event para mag-notify sa AllPatients window
+
         public event Action PatientSaved;
 
         public AddPatient(IPatientService patientService)
@@ -41,7 +41,7 @@ namespace WPF.Hospital
             var vm = DataContext as PatientViewModel;
             if (vm == null) return;
 
-            // Optional fields, default kung null
+
             string firstName = vm.FirstName ?? "";
             string lastName = vm.LastName ?? "";
             int.TryParse(vm.Age, out int age);
@@ -49,7 +49,7 @@ namespace WPF.Hospital
 
             if (_editingPatient != null)
             {
-                // UPDATE
+                
                 _editingPatient.FirstName = firstName;
                 _editingPatient.LastName = lastName;
                 _editingPatient.Age = age;
@@ -66,7 +66,7 @@ namespace WPF.Hospital
             }
             else
             {
-                // ADD
+               
                 var newPatient = new Patient
                 {
                     FirstName = firstName,
@@ -85,7 +85,7 @@ namespace WPF.Hospital
                 MessageBox.Show("Patient added successfully!");
             }
 
-            PatientSaved?.Invoke(); // Notify parent window
+            PatientSaved?.Invoke(); 
             Close();
         }
     }

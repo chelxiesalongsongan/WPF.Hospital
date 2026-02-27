@@ -60,7 +60,7 @@ namespace WPF.Hospital
 
                 var updateWindow = new AddPatient(_patientService);
                 updateWindow.LoadPatient(patientDto);
-                updateWindow.PatientSaved += () => LoadPatients(txtSearch.Text); // auto-refresh
+                updateWindow.PatientSaved += () => LoadPatients(txtSearch.Text);
                 updateWindow.ShowDialog();
             }
             else

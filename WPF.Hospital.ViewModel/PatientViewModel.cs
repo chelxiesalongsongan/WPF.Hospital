@@ -10,7 +10,7 @@ namespace WPF.Hospital.ViewModel
         public string Age { get; set; }
         public DateTime? Birthdate { get; set; }
 
-        // String property for DataGrid display
+
         public string BirthdateString => Birthdate.HasValue ? Birthdate.Value.ToShortDateString() : "";
     }
 }

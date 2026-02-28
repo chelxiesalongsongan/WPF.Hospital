@@ -59,7 +59,7 @@
                     <Setter Property="BorderThickness"  Value="0"></Setter>
                 </Style>
             </StackPanel.Resources>
-            <Button x:Name="btnAddMedicine" Content="Add Add Medicine"></Button>
+            <Button x:Name="btnAddMedicine" Content="Add Medicine"></Button>
             <Button Content="Delete Medicine"></Button>
             <Button x:Name="btnAllMedicine" Content="All Medicine"></Button>
         </StackPanel>

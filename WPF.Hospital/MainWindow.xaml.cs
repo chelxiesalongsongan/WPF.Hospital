@@ -18,7 +18,7 @@ namespace WPF.Hospital
     public partial class MainWindow : Window
     {
         private readonly IPatientService _patientService;
-
+        private readonly IMedicineService _medicineService;
         public MainWindow(IPatientService patientService)
         {
             InitializeComponent();
@@ -48,6 +48,12 @@ namespace WPF.Hospital
         {
             UpdatePatients updatePatient = new UpdatePatients(_patientService);
             updatePatient.ShowDialog();
+        }
+
+        private void btnOpenAddMedicine_Click(object sender, RoutedEventArgs e)
+        {
+            AddMedicine addMedWindow = new AddMedicine(_medicineService);
+            addMedWindow.Show();
         }
     }
 }

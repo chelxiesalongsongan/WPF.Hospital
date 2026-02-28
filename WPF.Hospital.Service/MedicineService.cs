@@ -10,27 +10,16 @@ namespace WPF.Hospital.Service
 
         public MedicineService(IMedicineRepository repository)
         {
-            _repository = repository;
+            _repository = repository ?? throw new System.ArgumentNullException(nameof(repository));
         }
 
+        public List<Medicine> GetAll() => _repository.GetAll();
 
-        public List<Medicine> GetAll()
-        {
-            return _repository.GetAll();
-        }
-
-
-        public Medicine? Get(int id)
-        {
-            return _repository.Get(id);
-        }
-
+        public Medicine? Get(int id) => _repository.Get(id);
 
         public (bool Ok, string Message) Create(Medicine medicine)
         {
-            if (medicine == null)
-                return (false, "Medicine is null.");
-
+            if (medicine == null) return (false, "Medicine is null.");
             try
             {
                 _repository.Add(medicine);
@@ -42,18 +31,13 @@ namespace WPF.Hospital.Service
             }
         }
 
-
         public (bool Ok, string Message) Update(Medicine medicine)
         {
-            if (medicine == null)
-                return (false, "Medicine is null.");
-
+            if (medicine == null) return (false, "Medicine is null.");
             try
             {
                 var existing = _repository.Get(medicine.Id);
-                if (existing == null)
-                    return (false, "Medicine not found.");
-
+                if (existing == null) return (false, "Medicine not found.");
                 _repository.Update(medicine);
                 return (true, "Medicine updated successfully.");
             }
@@ -68,9 +52,7 @@ namespace WPF.Hospital.Service
             try
             {
                 var medicine = _repository.Get(id);
-                if (medicine == null)
-                    return (false, "Medicine not found.");
-
+                if (medicine == null) return (false, "Medicine not found.");
                 _repository.Delete(id);
                 return (true, "Medicine deleted successfully.");
             }

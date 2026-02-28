@@ -26,7 +26,8 @@ namespace WPF.Hospital.Service
                                   Id = p.Id,
                                   FirstName = p.FirstName,
                                   LastName = p.LastName,
-                                  Age = p.Age
+                                  Age = p.Age,
+                                  Birthdate = p.Birthdate,
                               })
                               .ToList();
         }
@@ -42,7 +43,8 @@ namespace WPF.Hospital.Service
                 Id = entity.Id,
                 FirstName = entity.FirstName,
                 LastName = entity.LastName,
-                Age = entity.Age
+                Age = entity.Age,
+                Birthdate = entity.Birthdate,
             };
         }
 
@@ -58,7 +60,8 @@ namespace WPF.Hospital.Service
                 {
                     FirstName = patientDto.FirstName,
                     LastName = patientDto.LastName,
-                    Age = patientDto.Age
+                    Age = patientDto.Age,
+                    Birthdate = patientDto.Birthdate ?? DateTime.MinValue,
                 };
 
                 _repository.Add(entity);
@@ -86,6 +89,7 @@ namespace WPF.Hospital.Service
                 entity.FirstName = patientDto.FirstName;
                 entity.LastName = patientDto.LastName;
                 entity.Age = patientDto.Age;
+                entity.Birthdate = patientDto.Birthdate ?? DateTime.MinValue;
 
                 _repository.Update(entity);
                 return (true, "Patient updated successfully.");
@@ -122,7 +126,8 @@ namespace WPF.Hospital.Service
             {
                 FirstName = patientDto.FirstName,
                 LastName = patientDto.LastName,
-                Age = patientDto.Age
+                Age = patientDto.Age,
+                Birthdate = patientDto.Birthdate ?? DateTime.MinValue
             };
 
             _repository.Add(entity);

@@ -5,12 +5,14 @@
         Height="450"
         Width="800"
         WindowStartupLocation="CenterScreen">
+
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition/>
@@ -31,13 +33,17 @@
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
                   SelectionMode="Single">
+
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
                 <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" Width="*"/>
                 <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" Width="*"/>
                 <DataGridTextColumn Header="Age" Binding="{Binding Age}" Width="50"/>
-                <DataGridTextColumn Header="Birthdate" Binding="{Binding BirthdateString}" Width="120"/>
+                <DataGridTextColumn Header="Birthdate"
+                    Binding="{Binding Birthdate, StringFormat=yyyy-MM-dd}"
+                    Width="120"/>
             </DataGrid.Columns>
+
         </DataGrid>
 
         <Button x:Name="btnUpdatePatient"

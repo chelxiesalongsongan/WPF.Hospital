@@ -24,7 +24,8 @@ namespace WPF.Hospital
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 patients = patients
-                    .Where(p => p.FirstName.Contains(searchTerm, System.StringComparison.OrdinalIgnoreCase))
+                    .Where(p => p.FirstName.Contains(searchTerm, System.StringComparison.OrdinalIgnoreCase)
+                             || p.LastName.Contains(searchTerm, System.StringComparison.OrdinalIgnoreCase))
                     .ToList();
             }
 

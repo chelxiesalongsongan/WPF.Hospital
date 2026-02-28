@@ -12,6 +12,6 @@ namespace WPF.Hospital.Model
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int Age { get; set; }
-        public DateTime Birthdate { get; set; }
+        public DateTime? Birthdate { get; set; }
     }
 }

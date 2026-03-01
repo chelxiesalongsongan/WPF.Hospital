@@ -14,24 +14,24 @@ namespace WPF.Hospital.Repository
             _context = context;
         }
 
-        public List<Medicine> GetAll() => _context.Medicines.ToList();
-        public Medicine? Get(int id) => _context.Medicines.Find(id);
+        public List<Medicine> GetAll() => _context.Medicine.ToList();
+        public Medicine? Get(int id) => _context.Medicine.Find(id);
         public void Add(Medicine entity)
         {
-            _context.Medicines.Add(entity);
+            _context.Medicine.Add(entity);
             _context.SaveChanges();
         }
         public void Update(Medicine entity)
         {
-            _context.Medicines.Update(entity);
+            _context.Medicine.Update(entity);
             _context.SaveChanges();
         }
         public void Delete(int id)
         {
-            var entity = _context.Medicines.Find(id);
+            var entity = _context.Medicine.Find(id);
             if (entity != null)
             {
-                _context.Medicines.Remove(entity);
+                _context.Medicine.Remove(entity);
                 _context.SaveChanges();
             }
         }

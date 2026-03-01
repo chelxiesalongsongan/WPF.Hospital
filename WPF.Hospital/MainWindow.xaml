@@ -61,7 +61,7 @@
             </StackPanel.Resources>
             <Button x:Name="btnAddMedicine" Content="Add Medicine" Click="btnOpenAddMedicine_Click"></Button>
             <Button Content="Delete Medicine"></Button>
-            <Button x:Name="btnAllMedicine" Content="All Medicine"></Button>
+            <Button x:Name="btnAllMedicine" Content="All Medicine" Click="btnOpenAllMedicine_Click"></Button>
         </StackPanel>
         <Label Grid.Row="6" Margin="2" Content="Doctor Maintenance" FontSize="16" FontWeight="Bold"></Label>
         <StackPanel Margin="5" Orientation="Horizontal" Grid.Row="7">

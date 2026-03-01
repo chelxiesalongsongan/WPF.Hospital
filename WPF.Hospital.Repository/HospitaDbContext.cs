@@ -15,7 +15,7 @@ namespace WPF.Hospital.Repository
 
         public DbSet<Model.Patients> Patients { get; set; }
         public DbSet<Model.Doctor> Doctors { get; set; }
-        public DbSet<Model.Medicine> Medicines { get; set; }
+        public DbSet<Model.Medicine> Medicine { get; set; }
         public DbSet<Model.History> History { get; set; }
         public DbSet<Model.Prescription> Prescriptions { get; set; }
     }

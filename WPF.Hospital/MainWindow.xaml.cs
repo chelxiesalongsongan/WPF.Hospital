@@ -57,5 +57,11 @@ namespace WPF.Hospital
             AddMedicine addMedWindow = new AddMedicine(_medicineService);
             addMedWindow.ShowDialog();
         }
+
+        private void btnOpenAllMedicine_Click(object sender, RoutedEventArgs e)
+        {
+            AllMedicine allMedWindow = new AllMedicine(_medicineService);
+            allMedWindow.ShowDialog();
+        }
     }
 }

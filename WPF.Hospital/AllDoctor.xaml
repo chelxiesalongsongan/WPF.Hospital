@@ -1,0 +1,57 @@
+﻿<Window x:Class="WPF.Hospital.AllDoctor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="All Doctors"
+        Height="450"
+        Width="800"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <!-- TITLE -->
+        <Label Content="All Doctors" FontWeight="Bold"/>
+
+        <!-- SEARCH -->
+        <Label Grid.Row="1" Content="Search:"/>
+        <TextBox x:Name="txtSearch"
+                 Grid.Row="1"
+                 Grid.Column="1"
+                 TextChanged="txtSearch_TextChanged"/>
+
+        <!-- TABLE -->
+        <DataGrid x:Name="dgDoctors"
+                  Grid.Row="2"
+                  Grid.ColumnSpan="2"
+                  Margin="0,5,0,50"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  SelectionMode="Single">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
+                <DataGridTextColumn Header="Firstname" Binding="{Binding FirstName}" Width="*"/>
+                <DataGridTextColumn Header="Lastname" Binding="{Binding LastName}" Width="*"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
+
+        <!-- UPDATE BUTTON -->
+        <Button x:Name="btnUpdateDoctor"
+                Grid.Row="2"
+                Grid.ColumnSpan="2"
+                VerticalAlignment="Bottom"
+                Height="35"
+                Content="Update Selected Doctor"
+                Click="btnUpdateDoctor_Click"/>
+    </Grid>
+</Window>

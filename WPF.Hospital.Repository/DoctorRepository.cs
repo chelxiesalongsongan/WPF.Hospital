@@ -15,32 +15,32 @@ namespace WPF.Hospital.Repository
 
         public List<Doctor> GetAll()
         {
-            return _context.Doctors.ToList();
+            return _context.Doctor.ToList();
         }
 
         public Doctor? Get(int id)
         {
-            return _context.Doctors.Find(id);
+            return _context.Doctor.Find(id);
         }
 
         public void Add(Doctor entity)
         {
-            _context.Doctors.Add(entity);
+            _context.Doctor.Add(entity);
             _context.SaveChanges(); 
         }
 
         public void Update(Doctor entity)
         {
-            _context.Doctors.Update(entity);
+            _context.Doctor.Update(entity);
             _context.SaveChanges(); 
         }
 
         public void Delete(int id)
         {
-            var doctor = _context.Doctors.Find(id);
+            var doctor = _context.Doctor.Find(id);
             if (doctor != null)
             {
-                _context.Doctors.Remove(doctor);
+                _context.Doctor.Remove(doctor);
                 _context.SaveChanges();
             }
         }

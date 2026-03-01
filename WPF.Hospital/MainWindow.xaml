@@ -60,7 +60,7 @@
                 </Style>
             </StackPanel.Resources>
             <Button x:Name="btnAddMedicine" Content="Add Medicine" Click="btnOpenAddMedicine_Click"></Button>
-            <Button Content="Delete Medicine"></Button>
+            <Button x:Name="btnDeleteMedicine"  Content="Delete Medicine" Click="btnOpenDeleteMedicine_Click"></Button>
             <Button x:Name="btnAllMedicine" Content="All Medicine" Click="btnOpenAllMedicine_Click"></Button>
         </StackPanel>
         <Label Grid.Row="6" Margin="2" Content="Doctor Maintenance" FontSize="16" FontWeight="Bold"></Label>
@@ -72,9 +72,9 @@
                     <Setter Property="BorderThickness"  Value="0"></Setter>
                 </Style>
             </StackPanel.Resources>
-            <Button x:Name="btnAddDoctor" Content="Add Doctor"></Button>
-            <Button Content="Delete Doctor"></Button>
-            <Button x:Name="btnAllDoctor" Content="All Doctors"></Button>
+            <Button x:Name="btnAddDoctor" Content="Add Doctor" Click="btnOpenAddDoctor_Click"></Button>
+            <Button x:Name="btnDeleteDoctor" Content="Delete Doctor" Click="btnOpenDeleteDoctor_Click"></Button>
+            <Button x:Name="btnAllDoctor" Content="All Doctors" Click="btnOpenAllDoctor_Click"></Button>
         </StackPanel>
     </Grid>
 </Window>

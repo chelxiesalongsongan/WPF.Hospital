@@ -19,12 +19,14 @@ namespace WPF.Hospital
     {
         private readonly IPatientService _patientService;
         private readonly IMedicineService _medicineService;
+        private readonly IDoctorService _doctorService;
 
-        public MainWindow(IPatientService patientService, IMedicineService medicineService)
+        public MainWindow(IPatientService patientService, IMedicineService medicineService, IDoctorService doctorService)
         {
             InitializeComponent();
             _patientService = patientService;
-            _medicineService = medicineService; // IMPORTANT
+            _medicineService = medicineService;
+            _doctorService = doctorService;
             this.WindowState = WindowState.Maximized;
         }
 
@@ -62,6 +64,30 @@ namespace WPF.Hospital
         {
             AllMedicine allMedWindow = new AllMedicine(_medicineService);
             allMedWindow.ShowDialog();
+        }
+
+        private void btnOpenDeleteMedicine_Click(object sender, RoutedEventArgs e)
+        {
+            DeleteMedicine deleteMedWindow = new DeleteMedicine(_medicineService);
+            deleteMedWindow.ShowDialog();
+        }
+
+        private void btnOpenAddDoctor_Click(object sender, RoutedEventArgs e)
+        {
+            AddDoctor addDoctorWindow = new AddDoctor(_doctorService);
+            addDoctorWindow.ShowDialog();
+        }
+
+        private void btnOpenAllDoctor_Click(object sender, RoutedEventArgs e)
+        {
+            AllDoctor allDoctorWindow = new AllDoctor(_doctorService);
+            allDoctorWindow.ShowDialog();
+        }
+
+        private void btnOpenDeleteDoctor_Click(object sender, RoutedEventArgs e)
+        {
+            DeleteDoctor deleteDoctorWindow = new DeleteDoctor(_doctorService);
+            deleteDoctorWindow.ShowDialog();
         }
     }
 }

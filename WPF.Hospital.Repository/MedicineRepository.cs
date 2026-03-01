@@ -4,6 +4,7 @@ using WPF.Hospital.Model;
 
 namespace WPF.Hospital.Repository
 {
+
     public class MedicineRepository : IMedicineRepository
     {
         private readonly HospitaDbContext _context;
@@ -33,6 +34,11 @@ namespace WPF.Hospital.Repository
                 _context.Medicines.Remove(entity);
                 _context.SaveChanges();
             }
+        }
+
+        public int Save()
+        {
+            throw new NotImplementedException();
         }
     }
 }

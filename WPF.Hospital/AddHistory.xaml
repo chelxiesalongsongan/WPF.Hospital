@@ -1,0 +1,49 @@
+﻿<Window x:Class="WPF.Hospital.AddHistory"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Add History"
+        Height="250"
+        Width="400"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <Label Content="Add / Update History" FontWeight="Bold" FontSize="16"/>
+
+        <!-- Patient -->
+        <Label Grid.Row="1" Content="Patient:" VerticalAlignment="Center"/>
+        <ComboBox x:Name="cbPatient"
+                  Grid.Row="1"
+                  Grid.Column="1"
+                  DisplayMemberPath="FullName"
+                  SelectedValuePath="Id"/>
+
+        <!-- Doctor -->
+        <Label Grid.Row="2" Content="Doctor:" VerticalAlignment="Center"/>
+        <ComboBox x:Name="cbDoctor"
+                  Grid.Row="2"
+                  Grid.Column="1"
+                  DisplayMemberPath="FullName"
+                  SelectedValuePath="Id"/>
+
+        <!-- Procedure -->
+        <Label Grid.Row="3" Content="Procedure:" VerticalAlignment="Center"/>
+        <TextBox x:Name="tbProcedure" Grid.Row="3" Grid.Column="1"/>
+
+        <!-- Button -->
+        <Button x:Name="btnSaveHistory"
+                Grid.Row="4"
+                Grid.ColumnSpan="2"
+                Content="Save"
+                Height="35"
+                Click="btnSaveHistory_Click"
+                HorizontalAlignment="Right"
+                Width="100"/>
+    </Grid>
+</Window>

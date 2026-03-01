@@ -20,14 +20,19 @@ namespace WPF.Hospital
         private readonly IPatientService _patientService;
         private readonly IMedicineService _medicineService;
         private readonly IDoctorService _doctorService;
+        private readonly IHistoryService _historyService;
+        private readonly IPrescriptionService _prescriptionService;
 
-        public MainWindow(IPatientService patientService, IMedicineService medicineService, IDoctorService doctorService)
+        public MainWindow(IPatientService patientService, IMedicineService medicineService, IDoctorService doctorService, IHistoryService historyService, IPrescriptionService prescriptionService)
         {
             InitializeComponent();
             _patientService = patientService;
             _medicineService = medicineService;
             _doctorService = doctorService;
+            _historyService = historyService;
+            _prescriptionService = prescriptionService;
             this.WindowState = WindowState.Maximized;
+            _historyService = historyService;
         }
 
         private void btnAddPatient_Click(object sender, RoutedEventArgs e)
@@ -89,5 +94,52 @@ namespace WPF.Hospital
             DeleteDoctor deleteDoctorWindow = new DeleteDoctor(_doctorService);
             deleteDoctorWindow.ShowDialog();
         }
+
+        private void btnOpenAddHistory_Click(object sender, RoutedEventArgs e)
+        {
+            AddHistory addHistoryWindow = new AddHistory(_historyService, _patientService, _doctorService);
+            addHistoryWindow.ShowDialog();
+        }
+
+        private void btnOpenAllHistory_Click(object sender, RoutedEventArgs e)
+        {
+            AllHistory allHistoryWindow = new AllHistory(_historyService, _patientService, _doctorService);
+            allHistoryWindow.ShowDialog();
+        }
+
+        private void btnOpenDeleteHistory_Click(object sender, RoutedEventArgs e)
+        {
+            DeleteHistory deleteHistoryWindow = new DeleteHistory(_historyService);
+            deleteHistoryWindow.ShowDialog();
+        }
+
+
+
+        private void btnAddPrescription_Click(object sender, RoutedEventArgs e)
+        {
+            AddPrescription addPrescriptionWindow = new AddPrescription(
+                _prescriptionService,
+                _historyService, 
+                _medicineService
+            );
+            addPrescriptionWindow.ShowDialog();
+        }
+
+        private void btnAllPrescriptions_Click(object sender, RoutedEventArgs e)
+        {
+            AllPrescription allPrescriptionsWindow = new AllPrescription(
+                _prescriptionService,
+                _historyService,
+                _medicineService
+            );
+            allPrescriptionsWindow.ShowDialog();
+        }
+
+        private void btnDeletePrescription_Click(object sender, RoutedEventArgs e)
+        {
+            DeletePrescription deletePrescriptionWindow = new DeletePrescription(_prescriptionService);
+            deletePrescriptionWindow.ShowDialog();
+        }
+
     }
 }

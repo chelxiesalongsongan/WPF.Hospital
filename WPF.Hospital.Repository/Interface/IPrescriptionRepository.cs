@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using WPF.Hospital.Model;
 
 namespace WPF.Hospital.Repository
@@ -12,9 +8,8 @@ namespace WPF.Hospital.Repository
         List<Prescription> GetAll();
         List<Prescription> GetByHistory(int historyId);
         Prescription? Get(int id);
-        void Add(Prescription entity);
-        void Update(Prescription entity);
+        void Add(Prescription prescription);
+        void Update(Prescription prescription);
         void Delete(int id);
-        int Save();
     }
 }

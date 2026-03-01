@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;  
 using WPF.Hospital.Model;
 
 namespace WPF.Hospital.Repository
@@ -13,52 +14,41 @@ namespace WPF.Hospital.Repository
             _context = context;
         }
 
-        public List<Prescription> GetAll()
+        public List<Prescription> GetAll() =>
+            _context.Prescriptions.AsNoTracking().ToList();
+
+        public List<Prescription> GetByHistory(int historyId) =>
+            _context.Prescriptions
+                    .AsNoTracking()
+                    .Where(p => p.HistoryId == historyId)
+                    .ToList();
+
+        public Prescription? Get(int id) =>
+            _context.Prescriptions
+                    .AsNoTracking()
+                    .FirstOrDefault(p => p.Id == id);
+
+        public void Add(Prescription prescription)
         {
-            return _context.Prescriptions.ToList();
+            _context.Prescriptions.Add(prescription);
+            _context.SaveChanges();
         }
 
-
-        public Prescription? Get(int id)
+        public void Update(Prescription prescription)
         {
-            return _context.Prescriptions.Find(id);
-        }
-
-
-        public List<Prescription> GetByHistory(int historyId)
-        {
-            return _context.Prescriptions
-                           .Where(p => p.HistoryId == historyId)
-                           .ToList();
-        }
-
-
-        public void Add(Prescription entity)
-        {
-            _context.Prescriptions.Add(entity);
-            _context.SaveChanges(); 
-        }
-
-
-        public void Update(Prescription entity)
-        {
-            _context.Prescriptions.Update(entity);
+  
+            _context.Prescriptions.Update(prescription);
             _context.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            var prescription = _context.Prescriptions.Find(id);
+            var prescription = _context.Prescriptions.FirstOrDefault(p => p.Id == id);
             if (prescription != null)
             {
                 _context.Prescriptions.Remove(prescription);
                 _context.SaveChanges();
             }
-        }
-
-        public int Save()
-        {
-            return _context.SaveChanges();
         }
     }
 }

@@ -1,19 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WPF.Hospital.DTO;
+﻿using System.Collections.Generic;
+using WPF.Hospital.Model;
+using DTO = WPF.Hospital.DTO;
 
 namespace WPF.Hospital.Service
 {
     public interface IHistoryService
     {
-        List<History> GetAll();
-        List<History> GetByPatient(int patientId);
-        History? Get(int id);
-        (bool Ok, string Message) Create(History history);
-        (bool Ok, string Message) Update(History history);
+        // Model-based
+        List<History> GetAllModel();
+        History? GetModel(int id);
+        List<History> GetByPatientModel(int patientId);
+
+        // DTO-based
+        List<DTO.History> GetAll();
+        DTO.History? Get(int id);
+        List<DTO.History> GetByPatient(int patientId);
+
+        (bool Ok, string Message) Create(DTO.History dto);
+        (bool Ok, string Message) Update(DTO.History dto);
         (bool Ok, string Message) Delete(int id);
     }
 }

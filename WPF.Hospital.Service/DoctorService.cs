@@ -13,17 +13,9 @@ namespace WPF.Hospital.Service
             _repository = repository;
         }
 
+        public List<Doctor> GetAll() => _repository.GetAll();
 
-        public List<Doctor> GetAll()
-        {
-            return _repository.GetAll();
-        }
-
-
-        public Doctor? Get(int id)
-        {
-            return _repository.Get(id);
-        }
+        public Doctor? Get(int id) => _repository.Get(id);
 
         public (bool Ok, string Message) Create(Doctor doctor)
         {
@@ -37,10 +29,10 @@ namespace WPF.Hospital.Service
             }
             catch (System.Exception ex)
             {
-                return (false, $"Error creating doctor: {ex.Message}");
+                var inner = ex.InnerException?.Message ?? "No inner exception";
+                return (false, $"Error creating doctor: {ex.Message} | Inner: {inner}");
             }
         }
-
 
         public (bool Ok, string Message) Update(Doctor doctor)
         {
@@ -58,10 +50,10 @@ namespace WPF.Hospital.Service
             }
             catch (System.Exception ex)
             {
-                return (false, $"Error updating doctor: {ex.Message}");
+                var inner = ex.InnerException?.Message ?? "No inner exception";
+                return (false, $"Error updating doctor: {ex.Message} | Inner: {inner}");
             }
         }
-
 
         public (bool Ok, string Message) Delete(int id)
         {
@@ -76,7 +68,8 @@ namespace WPF.Hospital.Service
             }
             catch (System.Exception ex)
             {
-                return (false, $"Error deleting doctor: {ex.Message}");
+                var inner = ex.InnerException?.Message ?? "No inner exception";
+                return (false, $"Error deleting doctor: {ex.Message} | Inner: {inner}");
             }
         }
     }

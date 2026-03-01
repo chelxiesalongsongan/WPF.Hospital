@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using WPF.Hospital.Model;
 using WPF.Hospital.Repository;
+using DTO = WPF.Hospital.DTO;
 
 namespace WPF.Hospital.Service
 {
@@ -13,56 +16,94 @@ namespace WPF.Hospital.Service
             _repository = repository;
         }
 
+        // ---------------------- Model-based methods ----------------------
+        public List<History> GetAllModel() => _repository.GetAll();
 
-        public List<History> GetAll()
+        public History? GetModel(int id) => _repository.Get(id);
+
+        public List<History> GetByPatientModel(int patientId) => _repository.GetByPatientId(patientId);
+
+        // ---------------------- DTO-based methods ----------------------
+        public List<DTO.History> GetAll()
         {
-            return _repository.GetAll();
+            return _repository.GetAll()
+                              .Select(h => new DTO.History
+                              {
+                                  Id = h.Id,
+                                  PatientId = h.PatientId,
+                                  DoctorId = h.DoctorId,
+                                  Procedure = h.Procedure
+                              })
+                              .ToList();
         }
 
-        public List<History> GetByPatient(int patientId)
+        public DTO.History? Get(int id)
         {
-            return _repository.GetByPatientId(patientId);
+            var h = _repository.Get(id);
+            if (h == null) return null;
+
+            return new DTO.History
+            {
+                Id = h.Id,
+                PatientId = h.PatientId,
+                DoctorId = h.DoctorId,
+                Procedure = h.Procedure
+            };
         }
 
-        public History? Get(int id)
+        public List<DTO.History> GetByPatient(int patientId)
         {
-            return _repository.Get(id);
+            return _repository.GetByPatientId(patientId)
+                              .Select(h => new DTO.History
+                              {
+                                  Id = h.Id,
+                                  PatientId = h.PatientId,
+                                  DoctorId = h.DoctorId,
+                                  Procedure = h.Procedure
+                              })
+                              .ToList();
         }
 
-        public (bool Ok, string Message) Create(History history)
+        public (bool Ok, string Message) Create(DTO.History dto)
         {
-            if (history == null)
-                return (false, "History is null.");
-
+            if (dto == null) return (false, "History is null.");
             try
             {
-                _repository.Add(history);
+                var model = new History
+                {
+                    PatientId = dto.PatientId,
+                    DoctorId = dto.DoctorId,
+                    Procedure = dto.Procedure
+                };
+                _repository.Add(model);
                 return (true, "History created successfully.");
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                return (false, $"Error creating history: {ex.Message}");
+                var inner = ex.InnerException?.Message ?? "No inner exception";
+                return (false, $"Error creating history: {ex.Message} | Inner: {inner}");
             }
         }
 
-
-        public (bool Ok, string Message) Update(History history)
+        public (bool Ok, string Message) Update(DTO.History dto)
         {
-            if (history == null)
-                return (false, "History is null.");
-
+            if (dto == null) return (false, "History is null.");
             try
             {
-                var existing = _repository.Get(history.Id);
-                if (existing == null)
-                    return (false, "History not found.");
+                var existing = _repository.Get(dto.Id);
+                if (existing == null) return (false, "History not found.");
 
-                _repository.Update(history);
+                existing.PatientId = dto.PatientId;
+                existing.DoctorId = dto.DoctorId;
+                existing.Procedure = dto.Procedure;
+
+                _repository.Update(existing);
                 return (true, "History updated successfully.");
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                return (false, $"Error updating history: {ex.Message}");
+                var inner = ex.InnerException?.Message ?? "No inner exception";
+                return (false, $"Error updating history: {ex.Message} | Inner: {inner}");
             }
         }
 
@@ -71,41 +112,16 @@ namespace WPF.Hospital.Service
             try
             {
                 var history = _repository.Get(id);
-                if (history == null)
-                    return (false, "History not found.");
+                if (history == null) return (false, "History not found.");
 
                 _repository.Delete(id);
                 return (true, "History deleted successfully.");
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                return (false, $"Error deleting history: {ex.Message}");
+                var inner = ex.InnerException?.Message ?? "No inner exception";
+                return (false, $"Error deleting history: {ex.Message} | Inner: {inner}");
             }
-        }
-
-        List<DTO.History> IHistoryService.GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        List<DTO.History> IHistoryService.GetByPatient(int patientId)
-        {
-            throw new NotImplementedException();
-        }
-
-        DTO.History? IHistoryService.Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public (bool Ok, string Message) Create(DTO.History history)
-        {
-            throw new NotImplementedException();
-        }
-
-        public (bool Ok, string Message) Update(DTO.History history)
-        {
-            throw new NotImplementedException();
         }
     }
 }

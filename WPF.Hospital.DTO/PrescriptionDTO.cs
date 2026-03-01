@@ -2,18 +2,13 @@
 
 namespace WPF.Hospital.Model
 {
-    [Table("Prescription")]
-    public class Prescription
+    [Table("Prescription")] 
+    public class PrescriptionDTO
     {
         public int Id { get; set; }
-
         public int HistoryId { get; set; }
-        public History History { get; set; }   
-
         public int MedicineId { get; set; }
-        public Medicine Medicine { get; set; } 
-
         public int Quantity { get; set; }
-        public string Frequency { get; set; } = string.Empty;
+        public string Frequency { get; set; }
     }
 }

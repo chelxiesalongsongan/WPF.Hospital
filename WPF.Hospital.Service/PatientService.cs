@@ -16,10 +16,8 @@ namespace WPF.Hospital.Service
             _repository = repository;
         }
 
-
         public List<Patient> GetAll()
         {
-
             return _repository.GetAll()
                               .Select(p => new Patient
                               {
@@ -31,7 +29,6 @@ namespace WPF.Hospital.Service
                               })
                               .ToList();
         }
-
 
         public Patient? Get(int id)
         {
@@ -47,7 +44,6 @@ namespace WPF.Hospital.Service
                 Birthdate = entity.Birthdate,
             };
         }
-
 
         public (bool Ok, string Message) Create(Patient patientDto)
         {
@@ -69,10 +65,10 @@ namespace WPF.Hospital.Service
             }
             catch (Exception ex)
             {
-                return (false, $"Error creating patient: {ex.Message}");
+                var inner = ex.InnerException?.Message ?? "No inner exception";
+                return (false, $"Error creating patient: {ex.Message} | Inner: {inner}");
             }
         }
-
 
         public (bool Ok, string Message) Update(Patient patientDto)
         {
@@ -85,7 +81,6 @@ namespace WPF.Hospital.Service
                 if (entity == null)
                     return (false, "Patient not found.");
 
-
                 entity.FirstName = patientDto.FirstName;
                 entity.LastName = patientDto.LastName;
                 entity.Age = patientDto.Age;
@@ -96,7 +91,8 @@ namespace WPF.Hospital.Service
             }
             catch (Exception ex)
             {
-                return (false, $"Error updating patient: {ex.Message}");
+                var inner = ex.InnerException?.Message ?? "No inner exception";
+                return (false, $"Error updating patient: {ex.Message} | Inner: {inner}");
             }
         }
 
@@ -113,24 +109,14 @@ namespace WPF.Hospital.Service
             }
             catch (Exception ex)
             {
-                return (false, $"Error deleting patient: {ex.Message}");
+                var inner = ex.InnerException?.Message ?? "No inner exception";
+                return (false, $"Error deleting patient: {ex.Message} | Inner: {inner}");
             }
         }
 
-
-        public void Add(Patient patientDto)
+        public void Add(Patient patient)
         {
-            if (patientDto == null) return;
-
-            var entity = new Patients
-            {
-                FirstName = patientDto.FirstName,
-                LastName = patientDto.LastName,
-                Age = patientDto.Age,
-                Birthdate = patientDto.Birthdate ?? DateTime.MinValue
-            };
-
-            _repository.Add(entity);
+            throw new NotImplementedException();
         }
     }
 }

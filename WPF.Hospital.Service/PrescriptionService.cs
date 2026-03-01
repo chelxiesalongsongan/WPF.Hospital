@@ -13,23 +13,11 @@ namespace WPF.Hospital.Service
             _repository = repository;
         }
 
-  
-        public List<Prescription> GetAll()
-        {
-            return _repository.GetAll();
-        }
+        public List<Prescription> GetAll() => _repository.GetAll();
 
-        public List<Prescription> GetByHistory(int historyId)
-        {
-            return _repository.GetByHistory(historyId);
-        }
+        public List<Prescription> GetByHistory(int historyId) => _repository.GetByHistory(historyId);
 
-
-        public Prescription? Get(int id)
-        {
-            return _repository.Get(id);
-        }
-
+        public Prescription? Get(int id) => _repository.Get(id);
 
         public (bool Ok, string Message) Create(Prescription prescription)
         {
@@ -43,10 +31,10 @@ namespace WPF.Hospital.Service
             }
             catch (System.Exception ex)
             {
-                return (false, $"Error creating prescription: {ex.Message}");
+                var inner = ex.InnerException?.Message ?? "No inner exception";
+                return (false, $"Error creating prescription: {ex.Message} | Inner: {inner}");
             }
         }
-
 
         public (bool Ok, string Message) Update(Prescription prescription)
         {
@@ -64,10 +52,10 @@ namespace WPF.Hospital.Service
             }
             catch (System.Exception ex)
             {
-                return (false, $"Error updating prescription: {ex.Message}");
+                var inner = ex.InnerException?.Message ?? "No inner exception";
+                return (false, $"Error updating prescription: {ex.Message} | Inner: {inner}");
             }
         }
-
 
         public (bool Ok, string Message) Delete(int id)
         {
@@ -82,7 +70,8 @@ namespace WPF.Hospital.Service
             }
             catch (System.Exception ex)
             {
-                return (false, $"Error deleting prescription: {ex.Message}");
+                var inner = ex.InnerException?.Message ?? "No inner exception";
+                return (false, $"Error deleting prescription: {ex.Message} | Inner: {inner}");
             }
         }
     }
